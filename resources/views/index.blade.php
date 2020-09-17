@@ -36,7 +36,7 @@
 
             <div class="row pb120">
 
-                <div class="col-lg-12">{{ $products->links()  }}</div>
+                <div class="col-lg-12 align-center mb60">{{ $products->links()  }}</div>
 
             </div>
         </div>

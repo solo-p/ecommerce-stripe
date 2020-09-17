@@ -108,27 +108,42 @@ class ProductsController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'price' => 'required'
+            'price' => 'required',
+            'image' => 'required'2
         ]);
 
         $product = Product::find($id);
 
+        //dd($product_image = $request->image );
+
+        //dd($product);
+
         if($request->hasFile('image'))
         {
-            $product_image = $request->image;
 
-            $product_image_new_name = time() . $product_image->getClientOriginalName();
 
-            $product_image->move('uploads/products', $product_image_new_name);
 
-            $product->image = 'uploads/products/' . $product_image_new_name;
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = md5(time()).'.'.$extension;
+            $file->move('uploads/products', $filename);
 
-            $product->save();
+            $product->image=$filename;
+
+
+
+            //
+
+
+
+        }else{
+            Session::flash('success', 'Product IMage NOT updated.');
+
+
+            return redirect()->back();
         }
 
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->price = $request->price;
+
 
 
         $product->save();
